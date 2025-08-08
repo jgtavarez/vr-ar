@@ -286,8 +286,8 @@ Este proyecto está bajo la licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 
 ## 📞 Contacto y Soporte
 
-- **Developer:** Juan Gabriel Tavarez Lopez
-- **Email:** [tu-email@universidad.edu]
+- **Developer:** Juan Gabriel Tavarez
+- **Matrícula:** 1200221
 - **Universidad:** UTESA
 - **Proyecto:** Desarrollo VR/AR
 

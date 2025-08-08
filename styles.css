@@ -24,6 +24,57 @@ body {
     pointer-events: none;
 }
 
+/* Información del desarrollador fija (siempre visible) */
+#developer-info-fixed {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    background: rgba(26, 26, 46, 0.95);
+    padding: 15px 20px;
+    border-radius: 15px;
+    border: 2px solid #7B68EE;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 25px rgba(123, 104, 238, 0.5);
+    z-index: 2000;
+    pointer-events: none;
+    animation: developerGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes developerGlow {
+    from {
+        box-shadow: 0 0 25px rgba(123, 104, 238, 0.5);
+    }
+    to {
+        box-shadow: 0 0 35px rgba(123, 104, 238, 0.7);
+    }
+}
+
+#developer-info-fixed .developer-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #7B68EE;
+    text-shadow: 0 0 15px rgba(123, 104, 238, 0.8);
+}
+
+#developer-info-fixed .developer-id {
+    font-size: 0.95rem;
+    color: #00ff88;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+}
+
+#developer-info-fixed .university {
+    font-size: 0.85rem;
+    color: #4CC3D9;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(76, 195, 217, 0.6);
+}
+
 .screen {
     position: absolute;
     width: 100%;
@@ -156,6 +207,43 @@ body {
     gap: 10px;
 }
 
+/* Información del desarrollador */
+#developer-info {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px 20px;
+    border-radius: 15px;
+    border: 2px solid #7B68EE;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(123, 104, 238, 0.4);
+}
+
+.developer-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #7B68EE;
+    text-shadow: 0 0 10px rgba(123, 104, 238, 0.6);
+}
+
+.developer-id {
+    font-size: 0.95rem;
+    color: #00ff88;
+    font-weight: 600;
+}
+
+.university {
+    font-size: 0.85rem;
+    color: #4CC3D9;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
 .hud > div {
     background: rgba(0, 0, 0, 0.7);
     padding: 10px 20px;
@@ -234,6 +322,42 @@ body {
         padding: 8px 16px;
         font-size: 1rem;
     }
+    
+    #developer-info {
+        top: 10px;
+        right: 10px;
+        padding: 12px 16px;
+    }
+    
+    .developer-name {
+        font-size: 1rem;
+    }
+    
+    .developer-id {
+        font-size: 0.9rem;
+    }
+    
+    .university {
+        font-size: 0.8rem;
+    }
+    
+    #developer-info-fixed {
+        top: 10px;
+        right: 10px;
+        padding: 12px 16px;
+    }
+    
+    #developer-info-fixed .developer-name {
+        font-size: 1rem;
+    }
+    
+    #developer-info-fixed .developer-id {
+        font-size: 0.9rem;
+    }
+    
+    #developer-info-fixed .university {
+        font-size: 0.8rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -248,6 +372,44 @@ body {
     .btn-primary, .btn-secondary {
         width: 100%;
         margin: 5px 0;
+    }
+    
+    #developer-info {
+        top: 5px;
+        right: 5px;
+        padding: 8px 12px;
+        border-radius: 10px;
+    }
+    
+    .developer-name {
+        font-size: 0.9rem;
+    }
+    
+    .developer-id {
+        font-size: 0.8rem;
+    }
+    
+    .university {
+        font-size: 0.75rem;
+    }
+    
+    #developer-info-fixed {
+        top: 5px;
+        right: 5px;
+        padding: 8px 12px;
+        border-radius: 10px;
+    }
+    
+    #developer-info-fixed .developer-name {
+        font-size: 0.9rem;
+    }
+    
+    #developer-info-fixed .developer-id {
+        font-size: 0.8rem;
+    }
+    
+    #developer-info-fixed .university {
+        font-size: 0.75rem;
     }
 }
 
