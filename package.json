@@ -1,0 +1,44 @@
+{
+  "name": "explorador-espacial-vr",
+  "version": "1.0.0",
+  "description": "Juego de exploración espacial en realidad virtual desarrollado con A-Frame y JavaScript",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'No build step required for static site'",
+    "start": "npx serve .",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "vr",
+    "virtual-reality",
+    "aframe",
+    "javascript",
+    "space",
+    "game",
+    "webxr",
+    "web-game"
+  ],
+  "author": "Juan Gabriel Tavarez Lopez",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usuario/explorador-espacial-vr.git"
+  },
+  "homepage": "https://explorador-espacial-vr.vercel.app",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  },
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "volta": {
+    "node": "18.17.0"
+  }
+}

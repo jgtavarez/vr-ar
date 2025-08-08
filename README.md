@@ -42,9 +42,6 @@ Un juego inmersivo de exploración espacial desarrollado en **Realidad Virtual**
 ### Instalación Local
 
 ```bash
-# Clonar el repositorio
-git clone https://github.com/usuario/explorador-espacial-vr.git
-cd explorador-espacial-vr
 
 # Instalar dependencias (opcional para desarrollo)
 npm install

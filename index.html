@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador Espacial VR - Aventura Cósmica</title>
+    <meta name="description" content="Juego de exploración espacial en realidad virtual desarrollado con A-Frame">
+    
+    <!-- A-Frame VR Framework -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- UI Overlay -->
+    <div id="ui-overlay">
+        <div id="intro-screen" class="screen active">
+            <div class="content">
+                <h1>🚀 Explorador Espacial VR</h1>
+                <p>Embárcate en una aventura épica a través del cosmos</p>
+                <div class="instructions">
+                    <h3>Instrucciones:</h3>
+                    <ul>
+                        <li>🥽 Usa un casco VR o tu ratón/touch para mirar alrededor</li>
+                        <li>🎯 Apunta y haz clic en los planetas para explorar</li>
+                        <li>💎 Recolecta cristales espaciales para ganar puntos</li>
+                        <li>🛸 Evita los asteroides peligrosos</li>
+                    </ul>
+                </div>
+                <button id="start-game" class="btn-primary">Iniciar Aventura</button>
+                <button id="enter-vr" class="btn-secondary">Entrar en VR</button>
+            </div>
+        </div>
+        
+        <div id="game-ui" class="screen">
+            <div class="hud">
+                <div id="score">Cristales: <span id="score-value">0</span></div>
+                <div id="level">Nivel: <span id="level-value">1</span></div>
+                <div id="health">Energía: <span id="health-value">100</span>%</div>
+            </div>
+        </div>
+        
+        <div id="game-over" class="screen">
+            <div class="content">
+                <h2>¡Misión Completada!</h2>
+                <p>Cristales recolectados: <span id="final-score">0</span></p>
+                <button id="restart-game" class="btn-primary">Nueva Misión</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- A-Frame VR Scene -->
+    <a-scene 
+        id="vr-scene"
+        vr-mode-ui="enabled: true"
+        embedded
+        style="height: 100vh; width: 100vw;"
+        background="color: #000"
+        physics="driver: ammo; debug: false"
+        cursor="rayOrigin: mouse"
+        device-orientation-permission-ui="enabled: false">
+        
+        <!-- Assets -->
+        <a-assets>
+            <!-- Texturas -->
+            <img id="space-texture" src="https://cdn.jsdelivr.net/gh/aframevr/sample-assets/assets/images/space.jpg" crossorigin="anonymous">
+            <img id="earth-texture" src="https://cdn.jsdelivr.net/gh/aframevr/sample-assets/assets/images/earth.jpg" crossorigin="anonymous">
+            <img id="moon-texture" src="https://cdn.jsdelivr.net/gh/aframevr/sample-assets/assets/images/moon.jpg" crossorigin="anonymous">
+            
+            <!-- Sonidos -->
+            <audio id="ambient-space" src="https://cdn.freesound.org/previews/316/316847_5265237-lq.mp3" preload="auto" crossorigin="anonymous"></audio>
+            <audio id="crystal-sound" src="https://cdn.freesound.org/previews/316/316847_5265237-lq.mp3" preload="auto" crossorigin="anonymous"></audio>
+            <audio id="explosion-sound" src="https://cdn.freesound.org/previews/316/316847_5265237-lq.mp3" preload="auto" crossorigin="anonymous"></audio>
+        </a-assets>
+
+        <!-- Entorno espacial -->
+        <a-sky 
+            material="src: #space-texture; transparent: true"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 200000">
+        </a-sky>
+
+        <!-- Sistema de iluminación -->
+        <a-light type="ambient" color="#404040" intensity="0.3"></a-light>
+        <a-light 
+            type="directional" 
+            position="0 10 0" 
+            color="#FDB813" 
+            intensity="0.8"
+            light="castShadow: true">
+        </a-light>
+
+        <!-- Cámara del jugador -->
+        <a-entity 
+            id="player-rig"
+            movement-controls="fly: true"
+            position="0 1.6 3">
+            
+            <a-camera
+                id="camera"
+                look-controls="pointerLockEnabled: true"
+                wasd-controls="acceleration: 15"
+                cursor="fuse: false; rayOrigin: mouse">
+                
+                <!-- Crosshair para interacción -->
+                <a-cursor
+                    id="cursor"
+                    animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+                    animation__fusing="property: scale; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+                    geometry="primitive: ring; radiusOuter: 0.08; radiusInner: 0.06"
+                    material="color: #00ff88; opacity: 0.8"
+                    position="0 0 -3">
+                </a-cursor>
+            </a-camera>
+        </a-entity>
+
+        <!-- Planetas principales -->
+        <a-entity id="planets">
+            <!-- Tierra -->
+            <a-sphere
+                id="earth"
+                geometry="radius: 2"
+                material="src: #earth-texture"
+                position="-8 2 -10"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000"
+                class="planet interactive"
+                sound="src: #crystal-sound; on: click"
+                event-set__enter="_event: mouseenter; color: #4CC3D9"
+                event-set__leave="_event: mouseleave; color: #FFF">
+            </a-sphere>
+
+            <!-- Luna -->
+            <a-sphere
+                id="moon"
+                geometry="radius: 0.8"
+                material="src: #moon-texture"
+                position="-5 3 -8"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 15000"
+                class="planet interactive">
+            </a-sphere>
+
+            <!-- Marte -->
+            <a-sphere
+                id="mars"
+                geometry="radius: 1.5"
+                material="color: #CD5C5C"
+                position="10 1 -15"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 25000"
+                class="planet interactive">
+            </a-sphere>
+
+            <!-- Júpiter -->
+            <a-sphere
+                id="jupiter"
+                geometry="radius: 3.5"
+                material="color: #DAA520"
+                position="0 5 -25"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 30000"
+                class="planet interactive">
+            </a-sphere>
+        </a-entity>
+
+        <!-- Cristales espaciales (objetivos recolectables) -->
+        <a-entity id="crystals"></a-entity>
+
+        <!-- Asteroides (obstáculos) -->
+        <a-entity id="asteroids"></a-entity>
+
+        <!-- Partículas y efectos -->
+        <a-entity id="effects"></a-entity>
+
+        <!-- Estrellas de fondo -->
+        <a-entity id="stars"></a-entity>
+
+        <!-- Nave espacial del jugador -->
+        <a-entity 
+            id="spaceship"
+            position="0 -0.5 2"
+            rotation="0 180 0">
+            <a-cone
+                geometry="radiusBottom: 0.3; radiusTop: 0.1; height: 1"
+                material="color: #silver; metalness: 0.8"
+                position="0 0 0">
+            </a-cone>
+            <a-cylinder
+                geometry="radius: 0.15; height: 0.8"
+                material="color: #4169E1; emissive: #001155"
+                position="0 -0.4 0">
+            </a-cylinder>
+        </a-entity>
+
+        <!-- Zona de teletransporte -->
+        <a-plane
+            id="teleport-zone"
+            geometry="width: 50; height: 50"
+            material="color: #1a1a2e; opacity: 0.1"
+            rotation="-90 0 0"
+            position="0 -2 0">
+        </a-plane>
+    </a-scene>
+
+    <!-- Scripts del juego -->
+    <script src="game.js"></script>
+</body>
+</html>
